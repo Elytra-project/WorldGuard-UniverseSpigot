@@ -445,8 +445,6 @@ public class WorldGuardEntityListener extends AbstractListener {
         }
 
         BukkitWorldConfiguration wcfg = getWorldConfig(event.getLocation().getWorld());
-
-        // --- Creeper ---
         if (ent instanceof Creeper) {
             if (wcfg.blockCreeperExplosions) {
                 event.setCancelled(true);
@@ -465,7 +463,6 @@ public class WorldGuardEntityListener extends AbstractListener {
             return;
         }
 
-        // --- Ender Dragon ---
         if (ent instanceof EnderDragon) {
             if (wcfg.blockEnderDragonBlockDamage) {
                 event.blockList().clear();
@@ -474,7 +471,6 @@ public class WorldGuardEntityListener extends AbstractListener {
             return;
         }
 
-        // --- TNT & Minecart ---
         if (ent instanceof TNTPrimed || ent instanceof ExplosiveMinecart) {
             if (wcfg.blockTNTExplosions) {
                 event.setCancelled(true);
