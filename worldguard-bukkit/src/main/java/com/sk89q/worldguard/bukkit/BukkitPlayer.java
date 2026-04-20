@@ -129,20 +129,12 @@ public class BukkitPlayer extends com.sk89q.worldedit.bukkit.BukkitPlayer implem
 
     @Override
     public void setPlayerWeather(WeatherType weather) {
-        if (plugin.isEnabled()) {
-            getPlayer().getScheduler().run(plugin, task -> getPlayer().setPlayerWeather(weather == WeatherTypes.CLEAR ? org.bukkit.WeatherType.CLEAR : org.bukkit.WeatherType.DOWNFALL), null);
-        } else {
-            getPlayer().setPlayerWeather(weather == WeatherTypes.CLEAR ? org.bukkit.WeatherType.CLEAR : org.bukkit.WeatherType.DOWNFALL);
-        }
+        getPlayer().getScheduler().execute(plugin, () -> getPlayer().setPlayerWeather(weather == WeatherTypes.CLEAR ? org.bukkit.WeatherType.CLEAR : org.bukkit.WeatherType.DOWNFALL), null, 1L);
     }
 
     @Override
     public void resetPlayerWeather() {
-        if (plugin.isEnabled()) {
-            getPlayer().getScheduler().run(plugin, task -> getPlayer().resetPlayerWeather(), null);
-        } else {
-            getPlayer().resetPlayerWeather();
-        }
+        getPlayer().getScheduler().execute(plugin, () -> getPlayer().resetPlayerWeather(), null, 1L);
     }
 
     @Override
@@ -157,20 +149,12 @@ public class BukkitPlayer extends com.sk89q.worldedit.bukkit.BukkitPlayer implem
 
     @Override
     public void setPlayerTime(long time, boolean relative) {
-        if (plugin.isEnabled()) {
-            getPlayer().getScheduler().run(plugin, task -> getPlayer().setPlayerTime(time, relative), null);
-        } else {
-            getPlayer().setPlayerTime(time, relative);
-        }
+        getPlayer().getScheduler().execute(plugin, () -> getPlayer().setPlayerTime(time, relative), null, 1L);
     }
 
     @Override
     public void resetPlayerTime() {
-        if (plugin.isEnabled()) {
-            getPlayer().getScheduler().run(plugin, task -> getPlayer().resetPlayerTime(), null);
-        } else {
-            getPlayer().resetPlayerTime();
-        }
+        getPlayer().getScheduler().execute(plugin, () -> getPlayer().resetPlayerTime(), null, 1L);
     }
 
     @Override
