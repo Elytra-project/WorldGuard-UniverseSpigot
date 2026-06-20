@@ -98,6 +98,8 @@ tasks.named<ShadowJar>("shadowJar") {
         worldEditCoreJars.map { zipTree(it) }
     }) {
         include("com/sk89q/worldedit/internal/util/LogManagerCompat.class")
+        include("com/sk89q/worldedit/util/report/**")
+        exclude("com/sk89q/worldedit/util/report/ConfigReport.class")
         include("com/sk89q/util/yaml/**")
         include("com/sk89q/util/StringUtil.class")
         include("com/sk89q/worldedit/math/BlockVector2.class")
