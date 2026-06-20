@@ -89,6 +89,25 @@ tasks.named<ShadowJar>("shadowJar") {
         include("com/sk89q/wepif/**")
     }
 
+    from({
+        val worldEditCoreJars = runtimeClasspath.get()
+            .filter { it.name.startsWith("worldedit-core-") && it.name.endsWith(".jar") }
+        check(!worldEditCoreJars.isEmpty) {
+            "Unable to locate the WorldEdit Core runtime jar for WEPIF support packaging."
+        }
+        worldEditCoreJars.map { zipTree(it) }
+    }) {
+        include("com/sk89q/worldedit/internal/util/LogManagerCompat.class")
+        include("com/sk89q/util/yaml/**")
+        include("com/sk89q/util/StringUtil.class")
+        include("com/sk89q/worldedit/math/BlockVector2.class")
+        include("com/sk89q/worldedit/math/BlockVector3.class")
+        include("com/sk89q/worldedit/math/BlockVector3\$YzxOrderComparator.class")
+        include("com/sk89q/worldedit/math/Vector2.class")
+        include("com/sk89q/worldedit/math/Vector3.class")
+        include("com/sk89q/worldedit/math/Vector3\$YzxOrderComparator.class")
+    }
+
     dependencies {
         include(dependency(":worldguard-core"))
         include(dependency("org.bstats:"))
