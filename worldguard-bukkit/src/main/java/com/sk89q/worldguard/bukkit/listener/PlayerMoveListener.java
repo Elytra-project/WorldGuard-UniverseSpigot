@@ -25,7 +25,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.session.MoveType;
 import com.sk89q.worldguard.session.Session;
-import io.canvasmc.canvas.event.PlayerPostRespawnAsyncEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Entity;
@@ -36,6 +35,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityMountEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
@@ -55,7 +55,7 @@ public class PlayerMoveListener extends AbstractListener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerRespawn(PlayerPostRespawnAsyncEvent event) {
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
         LocalPlayer player = getPlugin().wrapPlayer(event.getPlayer());
 
         Session session = WorldGuard.getInstance().getPlatform().getSessionManager().get(player);

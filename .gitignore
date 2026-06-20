@@ -17,3 +17,7 @@ dependency-reduced-pom.xml
 out/
 
 scripts/
+
+# Private local API jars must never be committed.
+local-libs/
+private-libs/

@@ -15,7 +15,11 @@ tasks
         val disabledLint = listOf(
             "processing", "path", "fallthrough", "serial", "overloads",
         )
-        options.release.set(21)
+        val javaVersion = providers.gradleProperty("worldguardJavaVersion")
+            .orElse(providers.environmentVariable("WORLDGUARD_JAVA_VERSION"))
+            .map(String::toInt)
+            .getOrElse(21)
+        options.release.set(javaVersion)
         options.compilerArgs.addAll(listOf("-Xlint:all") + disabledLint.map { "-Xlint:-$it" })
         options.isDeprecation = true
         options.encoding = "UTF-8"

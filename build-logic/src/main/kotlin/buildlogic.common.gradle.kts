@@ -32,7 +32,11 @@ configurations.all {
 
 plugins.withId("java") {
     the<JavaPluginExtension>().toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        val javaVersion = providers.gradleProperty("worldguardJavaVersion")
+            .orElse(providers.environmentVariable("WORLDGUARD_JAVA_VERSION"))
+            .map(String::toInt)
+            .getOrElse(21)
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
     }
 }
 

@@ -37,3 +37,22 @@ If you want to use WorldGuard, use the `-dist` version.
 
 * `gradlew idea` will generate an [IntelliJ IDEA](http://www.jetbrains.com/idea/) module for each folder.
 * `gradlew eclipse` will generate an [Eclipse](https://www.eclipse.org/downloads/) project for each folder.
+
+## UniverseSpigot API
+
+`worldguard-bukkit` can be compiled against a private UniverseSpigot API jar or
+classpath without committing jars or a machine-specific path. Use one of:
+
+* `gradlew :worldguard-bukkit:assemble -PuniverseSpigotApiJar=<path-to-api.jar>`
+* `$env:UNIVERSESPIGOT_API_JAR='<path-to-api.jar>'; gradlew :worldguard-bukkit:assemble`
+* `gradlew :worldguard-bukkit:assemble -PuniverseSpigotApiClasspath='<path-list>'`
+* `$env:UNIVERSESPIGOT_API_CLASSPATH='<path-list>'; gradlew :worldguard-bukkit:assemble`
+* copy the jar to the ignored `local-libs/universe-spigot-api.jar` path
+* copy classpath jars to the ignored `local-libs/universe-spigot-api/` directory
+
+If the private API jar was built for a newer Java version, pass the matching
+toolchain target with `-PworldguardJavaVersion=<java-version>` or
+`WORLDGUARD_JAVA_VERSION=<java-version>`.
+
+The public Canvas API dependency remains on the compile classpath as a
+supplement for Folia/Canvas symbols and dependencies used by this fork.
