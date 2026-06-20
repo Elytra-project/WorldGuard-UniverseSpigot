@@ -76,6 +76,19 @@ tasks.named<Copy>("processResources") {
 }
 
 tasks.named<ShadowJar>("shadowJar") {
+    val runtimeClasspath = project.configurations.named("runtimeClasspath")
+
+    from({
+        val worldEditBukkitJars = runtimeClasspath.get()
+            .filter { it.name.startsWith("worldedit-bukkit-") && it.name.endsWith(".jar") }
+        check(!worldEditBukkitJars.isEmpty) {
+            "Unable to locate the WorldEdit Bukkit runtime jar for WEPIF packaging."
+        }
+        worldEditBukkitJars.map { zipTree(it) }
+    }) {
+        include("com/sk89q/wepif/**")
+    }
+
     dependencies {
         include(dependency(":worldguard-core"))
         include(dependency("org.bstats:"))
