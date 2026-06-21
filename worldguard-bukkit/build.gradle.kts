@@ -76,40 +76,14 @@ tasks.named<Copy>("processResources") {
 }
 
 tasks.named<ShadowJar>("shadowJar") {
-    val runtimeClasspath = project.configurations.named("runtimeClasspath")
-
-    from({
-        val worldEditBukkitJars = runtimeClasspath.get()
-            .filter { it.name.startsWith("worldedit-bukkit-") && it.name.endsWith(".jar") }
-        check(!worldEditBukkitJars.isEmpty) {
-            "Unable to locate the WorldEdit Bukkit runtime jar for WEPIF packaging."
-        }
-        worldEditBukkitJars.map { zipTree(it) }
-    }) {
-        include("com/sk89q/wepif/**")
-    }
-
-    from({
-        val worldEditCoreJars = runtimeClasspath.get()
-            .filter { it.name.startsWith("worldedit-core-") && it.name.endsWith(".jar") }
-        check(!worldEditCoreJars.isEmpty) {
-            "Unable to locate the WorldEdit Core runtime jar for WEPIF support packaging."
-        }
-        worldEditCoreJars.map { zipTree(it) }
-    }) {
-        include("com/sk89q/worldedit/internal/util/LogManagerCompat.class")
-        include("com/sk89q/worldedit/util/report/**")
-        exclude("com/sk89q/worldedit/util/report/ConfigReport.class")
-        include("com/sk89q/util/yaml/**")
-        include("com/sk89q/util/StringUtil.class")
-        include("com/sk89q/worldedit/math/BlockVector2.class")
-        include("com/sk89q/worldedit/math/BlockVector3.class")
-        include("com/sk89q/worldedit/math/BlockVector3\$YzxOrderComparator.class")
-        include("com/sk89q/worldedit/math/Vector2.class")
-        include("com/sk89q/worldedit/math/Vector3.class")
-        include("com/sk89q/worldedit/math/Vector3\$YzxOrderComparator.class")
-    }
-
+    // Do NOT bundle any com.sk89q.worldedit.**, com.sk89q.wepif.** or com.sk89q.util.**
+    // classes here. WorldGuard depends on WorldEdit (provided at runtime by
+    // FastAsyncWorldEdit, which declares `provides: [WorldEdit]`), so those classes are
+    // loaded from the FAWE plugin classloader. Shading copies of shared WorldEdit API
+    // types (BlockVector3, Vector3, Location, ...) into this jar makes the JVM see two
+    // distinct Class objects for the same type and triggers a LinkageError
+    // ("loader constraint violation") on every event that crosses the WG<->FAWE
+    // boundary (PlayerMove, CreatureSpawn, BlockSpread, ...).
     dependencies {
         include(dependency(":worldguard-core"))
         include(dependency("org.bstats:"))
